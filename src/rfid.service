@@ -1,0 +1,13 @@
+# systemd service about auto-start rfid.service after booting
+# path and command: sudo nano /lib/systemd/system/rfid.service
+
+[Unit]
+Description=Play Music from RFID Card
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/pi/MPD-RFID/mpd-rfid.py
+
+[Install]
+WantedBy=multi-user.target
