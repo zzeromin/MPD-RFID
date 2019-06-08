@@ -1,6 +1,6 @@
 echo "dtparam=spi=on" >> /boot/config.txt
 pip install mfrc522
-cp rfid.service /lib/systemd/system/
+cp /home/pi/MPD-RFID/src/rfid.service /lib/systemd/system/
 systemctl daemon-reload
 systemctl start rfid.service
 systemctl enable rfid.service
