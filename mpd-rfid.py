@@ -21,6 +21,7 @@ from mfrc522 import SimpleMFRC522
 # setup piezo
 piezo = 23
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 GPIO.setup(piezo, GPIO.OUT)
 
 # rfid tags and information
