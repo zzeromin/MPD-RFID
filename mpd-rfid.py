@@ -4,8 +4,8 @@
 Title         : mpd-rfid.py
 Author        : zzeromin member of Tentacle Team
 Creation Date : June 6, 2019
-Cafe          : http://cafe.naver.com/raspigamer, https://cafe.naver.com/unclejump
-Thanks to     : Tentacle Team, Raspigamer and MASIL Cafe
+Cafe          : http://cafe.naver.com/raspigamer, https://cafe.naver.com/unclejump, https://cafe.naver.com/doksumaker
+Thanks to     : Tentacle Team, Raspigamer, MASIL, Doksumaker Cafe
 Special thanks to : rolex member of Tentacle Team, you inspire me :)
 Notice        :
 MPD-RFID runs on RuneAudio and MoodeAudio, a custom built GNU Linux operating system for Raspberry Pi.
