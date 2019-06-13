@@ -11,7 +11,7 @@ $ sudo ./setup_moodeaudio.sh
 </code></pre>
 
 For RuneAudio:
-<pre><code>
+<pre><code>$ cd
 $ git clone https://github.com/zzeromin/MPD-RFID.git
 $ cd MPD-RFID
 $ chmod 755 *.sh
