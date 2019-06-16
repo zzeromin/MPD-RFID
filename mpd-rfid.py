@@ -70,24 +70,29 @@ def piezoBeep():
 
 # main code
 reader = SimpleMFRC522()
+card = ""
+oldCard = ""
 
 while True:
 
     id, card = reader.read()
     card = card.replace(" ", "")
-    piezoBeep()
 
     tag = card[0:3] # parse tag value in rfid card
     tag = tagSwap(tag)
-    #print("card = " + card)
-    #print("tag = " + tag)
 
     if card in mpc_commands:
         os.system("mpc " + card)
 
     elif tag in tag_list:
         card = card[4:] # parse card value in rfid card
-        mpdControl(tag, card)
+        #print("card = "+ card)
+
+        if oldCard != card:
+            piezoBeep()
+            mpdControl(tag, card)
+            oldCard = card
+            print("oldcard = "+ oldCard)
 
     else:
         pass
