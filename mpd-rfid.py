@@ -25,7 +25,7 @@ GPIO.setwarnings(False)
 GPIO.setup(piezo, GPIO.OUT)
 
 # rfid tags and information
-duplication = True # decide whether or not rfid can be recognized
+duplication = True # Set whether rfid can be recognized as duplicates
 mpc_commands = {"next", "prev", "toggle", "stop", "vol+10", "vol-10"}
 tag_list = {"album", "artist", "title", "track", "name", "genre", "date", "composer", "performer", "disc"}
 
