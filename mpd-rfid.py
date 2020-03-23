@@ -25,6 +25,7 @@ GPIO.setwarnings(False)
 GPIO.setup(piezo, GPIO.OUT)
 
 # rfid tags and information
+duplication = True # decide whether or not rfid can be recognized
 mpc_commands = {"next", "prev", "toggle", "stop", "vol+10", "vol-10"}
 tag_list = {"album", "artist", "title", "track", "name", "genre", "date", "composer", "performer", "disc"}
 
@@ -48,11 +49,11 @@ def artistSwap(card):
         "bts":"방탄소년단",
         "bol4":"볼빨간사춘기",
         "psy":"싸이",
-    }
-    card = artistMap.get(card, card)
+        "cool":"쿨",
+    }    
+    return artistMap.get(card, card)
 
-def mpdControl(tag, card):
-    artistSwap(card)
+def mpdControl(tag, card):    
 
     os.system("mpc clear")
     if tag in tag_list:
@@ -77,6 +78,8 @@ while True:
 
     id, card = reader.read()
     card = card.replace(" ", "")
+    card = card.lower()
+    print("read.card = " + card)
 
     tag = card[0:3] # parse tag value in rfid card
     tag = tagSwap(tag)
@@ -86,13 +89,19 @@ while True:
 
     elif tag in tag_list:
         card = card[4:] # parse card value in rfid card
-        #print("card = "+ card)
+        card = artistSwap(card)
+        print("art.card = "+ card)
 
-        if oldCard != card:
+        if duplication:
             piezoBeep()
             mpdControl(tag, card)
             oldCard = card
-            print("oldcard = "+ oldCard)
+        else:
+            if oldCard != card:
+                piezoBeep()
+                mpdControl(tag, card)
+                oldCard = card
+                print("oldcard = "+ oldCard)
 
     else:
         pass
