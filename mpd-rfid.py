@@ -8,7 +8,7 @@ Cafe          : http://cafe.naver.com/raspigamer, https://cafe.naver.com/uncleju
 Thanks to     : Tentacle Team, Raspigamer, MASIL, Doksumaker Cafe
 Special thanks to : rolex member of Tentacle Team, you inspire me :)
 Notice        :
-MPD-RFID runs on RuneAudio and MoodeAudio, a custom built GNU Linux operating system for Raspberry Pi.
+MPD-RFID run on RuneAudio and MoodeAudio, a custom built GNU Linux operating system for Raspberry Pi.
 installed python package: mfrc522
 Free and open for all to use. But put credit where credit is due.
 """
@@ -16,45 +16,21 @@ Free and open for all to use. But put credit where credit is due.
 import os
 import time
 import RPi.GPIO as GPIO
+import dataswap
 from mfrc522 import SimpleMFRC522
 
-# setup piezo
+# Raspberry Pi pin configuration:
 piezo = 23
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(piezo, GPIO.OUT)
 
-# rfid tags and information
-duplication = True # Set whether rfid can be recognized as duplicates
+# RFID tags and information
+duplication = True # decide whether or not rfid can be recognized
 mpc_commands = {"next", "prev", "toggle", "stop", "vol+10", "vol-10"}
 tag_list = {"album", "artist", "title", "track", "name", "genre", "date", "composer", "performer", "disc"}
 
-def tagSwap(tag):
-    if tag == "alb":   # alb = album
-        tag = "album"
-    elif tag == "art": # art = artist
-        tag = "artist"
-    elif tag == "pla": # pla = playlist
-        tag = "playlist"
-    elif tag == "tit": # tit = title
-        tag = "title"
-    elif tag == "com": # com = command
-        tag = "command"
-    return tag
-
-def artistSwap(card):
-    artistMap = {
-        ### 데이터 추가 방법 ###
-        ### "카드명":"한글가수명", ###
-        "bts":"방탄소년단",
-        "bol4":"볼빨간사춘기",
-        "psy":"싸이",
-        "cool":"쿨",
-    }    
-    return artistMap.get(card, card)
-
-def mpdControl(tag, card):    
-
+def mpdControl(tag, card):
     os.system("mpc clear")
     if tag in tag_list:
         if tag == "playlist":
@@ -70,41 +46,57 @@ def piezoBeep():
     piezo_pwm.stop()
 
 # main code
-reader = SimpleMFRC522()
-card = ""
-oldCard = ""
+def main():
+    reader = SimpleMFRC522()
+    card = ""
+    oldCard = ""
 
-while True:
+    while True:
+        id, card = reader.read()
+        card = card.replace(" ", "")
+        card = card.lower()
+        print("read.card = " + card)
 
-    id, card = reader.read()
-    card = card.replace(" ", "")
-    card = card.lower()
-    print("read.card = " + card)
+        tag = card[0:3] # parse tag value in rfid card
+        tag = dataswap.tagSwap(tag)
 
-    tag = card[0:3] # parse tag value in rfid card
-    tag = tagSwap(tag)
+        if card in mpc_commands:
+            os.system("mpc " + card)
 
-    if card in mpc_commands:
-        os.system("mpc " + card)
+        elif tag in tag_list:
+            card = card[4:] # parse card value in rfid card
+            card = dataswap.artistSwap(card)
+            print("art.card = "+ card)
 
-    elif tag in tag_list:
-        card = card[4:] # parse card value in rfid card
-        card = artistSwap(card)
-        print("art.card = "+ card)
-
-        if duplication:
-            piezoBeep()
-            mpdControl(tag, card)
-            oldCard = card
-        else:
-            if oldCard != card:
+            if duplication:
                 piezoBeep()
                 mpdControl(tag, card)
                 oldCard = card
-                print("oldcard = "+ oldCard)
+                
+            else:
+                if oldCard != card:
+                    piezoBeep()
+                    mpdControl(tag, card)
+                    oldCard = card
+                    print("oldcard = "+ oldCard)
 
-    else:
-        pass
+        else:
+            pass
 
-    card = ""
-    time.sleep(1)
+        card = ""
+        time.sleep(1)
+
+if __name__ == "__main__":
+    import sys
+
+    try:
+        main()
+
+    # Catch all other non-exit errors
+    except Exception as e:
+        sys.stderr.write("Unexpected exception: %s" % e)
+        sys.exit(1)
+
+    # Catch the remaining exit errors
+    except:
+        sys.exit(0)
