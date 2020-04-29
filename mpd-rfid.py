@@ -26,7 +26,7 @@ GPIO.setwarnings(False)
 GPIO.setup(piezo, GPIO.OUT)
 
 # RFID tags and information
-duplication = True # decide whether or not rfid can be recognized
+duplication = True # check whether RFID recognizes duplicate cards
 mpc_commands = {"next", "prev", "toggle", "stop", "vol+10", "vol-10"}
 tag_list = {"album", "artist", "title", "track", "name", "genre", "date", "composer", "performer", "disc"}
 
@@ -65,7 +65,7 @@ def main():
 
         elif tag in tag_list:
             card = card[4:] # parse card value in rfid card
-            card = dataswap.artistSwap(card)
+            card = dataswap.cardSwap(card)
             print("art.card = "+ card)
 
             if duplication:
