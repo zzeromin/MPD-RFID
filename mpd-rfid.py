@@ -28,7 +28,7 @@ GPIO.setup(piezo, GPIO.OUT)
 # RFID tags and information
 duplication = True # check whether RFID recognizes duplicate cards
 mpc_commands = {"next", "prev", "toggle", "stop", "vol+10", "vol-10"}
-tag_list = {"album", "artist", "title", "track", "name", "genre", "date", "composer", "performer", "disc"}
+tag_list = {"album", "artist", "title", "playlist", "track", "name", "genre", "date", "composer", "performer", "disc"}
 
 def mpdControl(tag, card):
     os.system("mpc clear")
@@ -59,6 +59,7 @@ def main():
 
         tag = card[0:3] # parse tag value in rfid card
         tag = dataswap.tagSwap(tag)
+        print("tag =" + tag)
 
         if card in mpc_commands:
             os.system("mpc " + card)
@@ -66,7 +67,7 @@ def main():
         elif tag in tag_list:
             card = card[4:] # parse card value in rfid card
             card = dataswap.cardSwap(card)
-            print("art.card = "+ card)
+            print("card = "+ card)
 
             if duplication:
                 piezoBeep()
