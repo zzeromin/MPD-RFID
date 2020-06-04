@@ -7,7 +7,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python /home/pi/MPD-RFID/mpd-rfid.py
+ExecStart=/usr/bin/python3 /home/pi/MPD-RFID/mpd-rfid.py
 
 [Install]
 WantedBy=multi-user.target
