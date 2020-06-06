@@ -8,7 +8,7 @@ MPD-RFID runs on RuneAudio and MoodeAudio, a custom built GNU Linux operating sy
 Install using PIP:
 <pre><code>$ pip3 install mfrc522
 $ pip3 install pi-rc522
-<pre><code>$
+</code></pre>
 
 For RuneAudio:
 <pre><code>$ cd
