@@ -1,5 +1,6 @@
 sed -i 's/#dtparam=spi=on/dtparam=spi=on/g' /boot/config.txt
-pip install mfrc522
+pip3 install mfrc522
+pip3 install pi-rc522
 cp /root/MPD-RFID/src/rfid.service /lib/systemd/system/
 sed -i 's/home\/pi/root/g' /lib/systemd/system/rfid.service
 systemctl daemon-reload
