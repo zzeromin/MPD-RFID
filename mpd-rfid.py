@@ -37,6 +37,7 @@ util.debug = True
 duplication = True # check whether RFID recognizes duplicate cards
 mpc_commands = {"next", "prev", "toggle", "stop", "vol+10", "vol-10"}
 tag_list = {"album", "artist", "title", "playlist", "track", "name", "genre", "date", "composer", "performer", "disc"}
+others = {"utube"}
 
 def mpdControl(tag, card):
     os.system("mpc clear")
@@ -85,6 +86,12 @@ def main():
 
             if card in mpc_commands:
                 os.system("mpc " + card)
+
+            elif tag in others:
+                card = card[6:] # parse card value in rfid card
+                card = dataswap.utubeSwap(card)
+                print("card = "+ card)
+                os.system(card)
 
             elif tag in tag_list:
                 card = card[4:] # parse card value in rfid card
