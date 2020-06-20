@@ -30,5 +30,13 @@ def tagSwap(tag):
         "pla":"playlist",
         "tit":"title",
         "com":"command",
+        "utu":"utube",
     }
     return tagMap.get(tag, tag)
+
+def utubeSwap(utube):
+    utubeMap = {
+        "on":"mpc stop; export DISPLAY=:0; xdotool key Ctrl+n",
+        "off":"export DISPLAY=:0; xdotool key Ctrl+Shift+w",
+    }
+    return utubeMap.get(utube, utube)
