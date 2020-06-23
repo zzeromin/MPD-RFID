@@ -36,7 +36,7 @@ def tagSwap(tag):
 
 def utubeSwap(utube):
     utubeMap = {
-        "on":"mpc stop; export DISPLAY=:0; xdotool key Ctrl+n",
+        "on":"mpc stop; sudo -u pi DISPLAY=:0 chromium-browser --start-fullscreen --app=https://youtube.com/watch?v=1oGHSDyDEqA&feature=share?autoplay=1",
         "off":"export DISPLAY=:0; xdotool key Ctrl+Shift+w",
     }
     return utubeMap.get(utube, utube)
